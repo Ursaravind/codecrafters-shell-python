@@ -7,8 +7,6 @@ def main():
         sys.stdout.write("$ ")
         command = input()
         parts = command.split()
-        print(parts)
-
         if command == "exit":
             break
         if parts and parts[0] == "echo":
