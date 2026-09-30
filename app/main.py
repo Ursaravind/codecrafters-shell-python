@@ -15,8 +15,10 @@ def main():
         if parts:
             if command == "echo":
                 print(" ".join(parts[1:]))
-            if command == "type" and args in builtins:
+            elif command == "type" and args in builtins:
                 print(f"{parts[1]} is a shell builtin")
+            elif command == "type" and args not in builtins:
+                print(f"{args}: not found")
             else:
                 print(f"{usr_input}: command not found")
         else:
