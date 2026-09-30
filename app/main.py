@@ -1,9 +1,10 @@
 import sys
 
+from .commands import get_command_handler
+
 
 def main():
     # TODO: Uncomment the code below to pass the first stage
-    builtins = {"echo", "exit", "type"}
     while True:
         sys.stdout.write("$ ")
         try:
@@ -15,19 +16,11 @@ def main():
 
         command = parts[0]
         args = parts[1:]
-        if command == "exit":
-            break
-        elif command == "echo":
-            print(" ".join(parts[1:]))
-        elif command == "type":
-            if not args:
-                print("type: missing operand")
-            else:
-                for name in args:
-                    if name in builtins:
-                        print(f"{name} is a shell builtin")
-                    else:
-                        print(f"{name}: not found")
+        handler = get_command_handler(command=command)
+        if handler:
+            is_exit = handler(args=args)
+            if is_exit:
+                break
         else:
             print(f"{command}: command not found")
 
