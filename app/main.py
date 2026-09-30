@@ -3,26 +3,33 @@ import sys
 
 def main():
     # TODO: Uncomment the code below to pass the first stage
-    builtins = ["echo", "exit", "type"]
+    builtins = {"echo", "exit", "type"}
     while True:
         sys.stdout.write("$ ")
-        usr_input = input().strip().lower()
-        parts = usr_input.split()
-        if usr_input == "exit":
+        try:
+            parts = input().strip().split()
+        except EOFError:
             break
+        if not parts:
+            continue
+
         command = parts[0]
-        args = parts[1]
-        if parts:
-            if command == "echo":
-                print(" ".join(parts[1:]))
-            elif command == "type" and args in builtins:
-                print(f"{parts[1]} is a shell builtin")
-            elif command == "type" and args not in builtins:
-                print(f"{args}: not found")
+        args = parts[1:]
+        if command == "exit":
+            break
+        elif command == "echo":
+            print(" ".join(parts[1:]))
+        elif command == "type":
+            if not args:
+                print("type: missing operand")
             else:
-                print(f"{usr_input}: command not found")
+                for name in args:
+                    if name in builtins:
+                        print(f"{name} is a shell builtin")
+                    else:
+                        print(f"{name}: not found")
         else:
-            print("No user input provided")
+            print(f"{command}: command not found")
 
 
 if __name__ == "__main__":
