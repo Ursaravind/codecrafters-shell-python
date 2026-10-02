@@ -9,12 +9,11 @@ def find_executable(command: str) -> str | None:
     path = os.environ.get("PATH", "")
     # here we are using os.pathsep because in windows the directory separator is ; and in linux it is :
     # so irrespective of the operating system , we use the safe parse  .
-    file_path = None
     for directory in path.split(os.pathsep):
         _file_path = os.path.join(directory, command)
         if os.path.isfile(_file_path) and os.access(_file_path, os.X_OK):
-            file_path = _file_path
-    return file_path
+            return _file_path
+    return None
 
 
 def handle_echo(args):

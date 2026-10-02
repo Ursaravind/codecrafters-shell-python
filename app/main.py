@@ -1,6 +1,8 @@
+import shlex
+import subprocess
 import sys
 
-from .commands import get_command_handler
+from .commands import find_executable, get_command_handler
 
 
 def main():
@@ -8,7 +10,7 @@ def main():
     while True:
         sys.stdout.write("$ ")
         try:
-            parts = input().strip().split()
+            parts = shlex.split(input())
         except EOFError:
             break
         if not parts:
@@ -22,7 +24,11 @@ def main():
             if is_exit:
                 break
         else:
-            print(f"{command}: command not found")
+            executable = find_executable(command=command)
+            if executable:
+                subprocess.run([command, *args], executable=executable)
+            else:
+                print(f"{command}: command not found")
 
 
 if __name__ == "__main__":
