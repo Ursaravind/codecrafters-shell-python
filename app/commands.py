@@ -40,11 +40,10 @@ def handle_pwd(args):
 
 
 def handle_cd(args):
-    _args = " ".join(args)
     try:
-        os.chdir(_args)
+        os.chdir(args[0])
     except Exception as e:
-        print(f"cd: {_args}: No such file or directory")
+        print(f"cd: {args[0]}: No such file or directory")
 
 
 def handle_type(args):
