@@ -40,10 +40,13 @@ def handle_pwd(args):
 
 
 def handle_cd(args):
+    _args = args[0]
+    if _args == "~":
+        _args = os.path.expanduser("~")
     try:
-        os.chdir(args[0])
+        os.chdir(_args)
     except Exception as e:
-        print(f"cd: {args[0]}: No such file or directory")
+        print(f"cd: {_args}: No such file or directory")
 
 
 def handle_type(args):
