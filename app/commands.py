@@ -3,7 +3,7 @@ import shutil
 
 from .utils import constants as cs
 
-BUILTINS = {cs.ECHO, cs.EXIT, cs.TYPE, cs.PWD}
+BUILTINS = {cs.ECHO, cs.EXIT, cs.TYPE, cs.PWD, cs.CD}
 
 
 def find_executable(command: str) -> str | None:
@@ -39,6 +39,14 @@ def handle_pwd(args):
     print(os.getcwd())
 
 
+def handle_cd(args):
+    _args = " ".join(args)
+    try:
+        os.chdir(_args)
+    except Exception as e:
+        print(f"cd: {_args}: No such file or directory")
+
+
 def handle_type(args):
     if args:
         for name in args:
@@ -60,5 +68,6 @@ def get_command_handler(command: str):
         cs.TYPE: handle_type,
         cs.EXIT: handle_exit,
         cs.PWD: handle_pwd,
+        cs.CD: handle_cd,
     }
     return registry.get(command)
